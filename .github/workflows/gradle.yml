@@ -22,7 +22,7 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
       - uses: browser-actions/setup-chrome@v1
-      - run: chrome --version
+      - run: chrome --version 112.0.5615
       - name: Run artifact
         run: java -jar ./artifacts/app-order.jar & chmod +x gradlew
       - name: Grant execute permission for gradlew
