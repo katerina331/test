@@ -21,11 +21,13 @@ class CallbackTest {
 
     @BeforeEach
     void setUp() {
+        driver = new ChromeDriver();
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--disable-dev-shm-usage");
         options.addArguments("--no-sandbox");
         options.addArguments("--headless");
         driver = new ChromeDriver(options);
+        driver.get("http://localhost:9999");
     }
 
     @AfterEach
@@ -36,7 +38,7 @@ class CallbackTest {
 
     @Test
     void shouldTestV1() {
-        driver.get("http://localhost:9999");
+
         driver.findElements(By.className("input__control")).get(0).sendKeys("Василий");
         driver.findElements(By.className("input__control")).get(1).sendKeys("+79270000000");
         driver.findElement(By.className("checkbox__box")).click();
