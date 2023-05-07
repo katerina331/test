@@ -11,9 +11,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class WebTest {
     @Test
     void shouldTestV1() {
-        Configuration.holdBrowserOpen = false;
-        Configuration.timeout = 10;
-        open("localhost:7777");
+        Configuration.holdBrowserOpen = true;
+        open("localhost:9999");
   //      $("[type=tel]").should(appear);
         assertEquals(1, 1);
     }
