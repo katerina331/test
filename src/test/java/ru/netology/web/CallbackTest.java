@@ -11,7 +11,7 @@ class CallbackTest {
 
     @Test
     void shouldTestV1() {
-        Configuration.holdBrowserOpen = true;
+//        Configuration.holdBrowserOpen = true;
         open("http://localhost:9999/");
         $("[type=tel]").should(appear);
     }
