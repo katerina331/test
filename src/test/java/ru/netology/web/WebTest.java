@@ -13,7 +13,7 @@ public class WebTest {
     void shouldTestV1() {
         Configuration.holdBrowserOpen = false;
         Configuration.timeout = 10;
-        open("http://localhost:9999/");
+        open("localhost:7777");
         $("[type=tel]").should(appear);
         assertEquals(1, 1);
     }
