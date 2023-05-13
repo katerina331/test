@@ -1,5 +1,7 @@
 package entities;
+
 import lombok.Data;
+
 @Data
 public class RegistrationInfo {
     private final String city;

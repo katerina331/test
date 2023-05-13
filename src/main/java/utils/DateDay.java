@@ -7,7 +7,7 @@ import java.time.format.DateTimeFormatter;
 
 @UtilityClass
 public class DateDay {
-    public String NewDatePlusFormat(int plusDay, String dateFormat){
+    public String NewDatePlusFormat(int plusDay, String dateFormat) {
         return LocalDate.now().plusDays(plusDay).format(DateTimeFormatter.ofPattern(dateFormat));
     }
 }

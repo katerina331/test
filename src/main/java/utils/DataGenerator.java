@@ -11,8 +11,8 @@ public class DataGenerator {
     @UtilityClass
     public static class Registration {
         public static RegistrationInfo generationInfo(String locale) {
-            Faker faker=new Faker(new Locale(locale));
-            return new RegistrationInfo(faker.address().city(), faker.name().lastName()+" "+faker.name().firstName(),faker.phoneNumber().phoneNumber().replaceAll("[^0-9+]",""));
+            Faker faker = new Faker(new Locale(locale));
+            return new RegistrationInfo(faker.address().city(), faker.name().lastName() + " " + faker.name().firstName(), faker.phoneNumber().phoneNumber().replaceAll("[^0-9+]", ""));
         }
     }
 }
