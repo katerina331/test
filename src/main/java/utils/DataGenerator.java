@@ -10,9 +10,9 @@ import java.util.Locale;
 public class DataGenerator {
     @UtilityClass
     public static class Registration {
-        public static RegistrationInfo generationInfo(String locale) {
+        public static RegistrationInfo generationInfo(boolean status,String locale) {
             Faker faker = new Faker(new Locale(locale));
-            return new RegistrationInfo(faker.address().city(), faker.name().lastName() + " " + faker.name().firstName(), faker.phoneNumber().phoneNumber().replaceAll("[^0-9+]", ""));
+            return new RegistrationInfo(faker.name().lastName(), faker.internet().password(),status ? "active" : "blocked");
         }
     }
 }

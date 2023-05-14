@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class RegistrationInfo {
-    private final String city;
-    private final String name;
-    private final String phone;
+    private final String login;
+    private final String password;
+    private final String status;
 }

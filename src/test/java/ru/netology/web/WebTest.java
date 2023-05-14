@@ -2,76 +2,99 @@ package ru.netology.web;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Configuration;
-import com.github.javafaker.Faker;
 import entities.RegistrationInfo;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.Keys;
+import utils.CreateUser;
 import utils.DataGenerator;
-import utils.DateDay;
 
-import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.open;
 
 
 public class WebTest {
-    private static Faker faker;
 
     @Test
-    void shouldTestV1() {
-        Configuration.holdBrowserOpen = false;
-        open("http://localhost:9999");
-        RegistrationInfo info = DataGenerator.Registration.generationInfo("ru");
-        String date = DateDay.NewDatePlusFormat(4, "dd.MM.yyyy");
-        $("[data-test-id=city] input").setValue(info.getCity());
-        $("[data-test-id=date] input").doubleClick().sendKeys(date);
-        $("[data-test-id=name] input").setValue(info.getName());
-        $("[data-test-id=phone] input").setValue(info.getPhone());
-        $("[data-test-id=agreement]").click();
-        $("button.button").click();
-        $("[data-test-id=success-notification]").should(visible);
-    }
-
-    @Test
-    void shouldTestV2() {
-        Configuration.holdBrowserOpen = false;
-        open("http://localhost:9999");
-        RegistrationInfo info = DataGenerator.Registration.generationInfo("ru");
-        String date = DateDay.NewDatePlusFormat(4, "dd.MM.yyyy");
-        $("[data-test-id=city] input").setValue(info.getCity().substring(0, 3));
-        $x("//*[contains(text(),'" + info.getCity() + "')]").click();
-        $("[data-test-id=date] input").doubleClick().sendKeys(Keys.ARROW_DOWN, Keys.ARROW_RIGHT, Keys.ENTER);
-        $("[data-test-id=name] input").setValue(info.getName());
-        $("[data-test-id=phone] input").setValue(info.getPhone());
-        $("[data-test-id=agreement]").click();
-        $(".button").click();
-        $("[data-test-id=success-notification]").shouldHave(Condition.text("Встреча успешно запланирована на " + date)).should(visible);
-    }
-
-    @Test
-    void shouldTestV3() {
+    void shouldTestActive() {
         Configuration.holdBrowserOpen = true;
         open("http://localhost:9999");
-        RegistrationInfo info = DataGenerator.Registration.generationInfo("ru");
-        String date = DateDay.NewDatePlusFormat(4, "dd.MM.yyyy");
-        $("[data-test-id=city] input").setValue(info.getCity().substring(0, 3));
-        $x("//*[contains(text(),'" + info.getCity() + "')]").click();
-        $("[data-test-id=date] input").doubleClick().sendKeys(Keys.ARROW_DOWN, Keys.ARROW_RIGHT, Keys.ENTER);
-        $("[data-test-id=name] input").setValue(info.getName());
-        $("[data-test-id=phone] input").setValue(info.getPhone());
-        $("[data-test-id=agreement]").click();
-        $(".button").click();
-        $("[data-test-id=success-notification] .notification__content").shouldHave(Condition.text("Встреча успешно запланирована на " + date));
-        refresh();
-        String newDate = DateDay.NewDatePlusFormat(5, "dd.MM.yyyy");
-        $("[data-test-id=city] input").setValue(info.getCity().substring(0, 3));
-        $x("//*[contains(text(),'" + info.getCity() + "')]").click();
-        $("[data-test-id=date] input").doubleClick().sendKeys(Keys.ARROW_DOWN, Keys.ARROW_RIGHT, Keys.ARROW_RIGHT, Keys.ENTER);
-        $("[data-test-id=name] input").setValue(info.getName());
-        $("[data-test-id=phone] input").setValue(info.getPhone());
-        $("[data-test-id=agreement]").click();
-        $(".button").click();
-        $("[data-test-id=replan-notification] .notification__content").shouldHave(Condition.text("У вас уже запланирована встреча на другую дату. Перепланировать?")).should(visible);
-        $("[data-test-id=replan-notification] .button").click();
-        $("[data-test-id=success-notification] .notification__content").shouldHave(Condition.text("Встреча успешно запланирована на " + newDate));
+        RegistrationInfo info = DataGenerator.Registration.generationInfo(true,"ru");
+        CreateUser.CreateNewUser(info);
+        $("[data-test-id=login] input").setValue(info.getLogin());
+        $("[data-test-id=password] input").setValue(info.getPassword());
+        $("[data-test-id=action-login]").click();
+        $("[id=root]").shouldHave(Condition.text("Личный кабинет"));
+        $("[id=root] .icon_theme_alfa-on-white").shouldHave(Condition.visible);
+    }
+
+    @Test
+    void shouldTestNotActive() {
+        Configuration.holdBrowserOpen = true;
+        open("http://localhost:9999");
+        RegistrationInfo info = DataGenerator.Registration.generationInfo(false,"ru");
+        CreateUser.CreateNewUser(info);
+        $("[data-test-id=login] input").setValue(info.getLogin());
+        $("[data-test-id=password] input").setValue(info.getPassword());
+        $("[data-test-id=action-login]").click();
+        $("[data-test-id=error-notification]").shouldHave(Condition.text("Пользователь заблокирован")).shouldHave(Condition.visible);
+    }
+
+    @Test
+    void shouldTestEnLogin() {
+        Configuration.holdBrowserOpen = true;
+        open("http://localhost:9999");
+        RegistrationInfo info = DataGenerator.Registration.generationInfo(true,"en");
+        CreateUser.CreateNewUser(info);
+        $("[data-test-id=login] input").setValue(info.getLogin());
+        $("[data-test-id=password] input").setValue(info.getPassword());
+        $("[data-test-id=action-login]").click();
+        $("[id=root]").shouldHave(Condition.text("Личный кабинет"));
+        $("[id=root] .icon_theme_alfa-on-white").shouldHave(Condition.visible);
+    }
+
+    @Test
+    void shouldTestNonLogin() {
+        Configuration.holdBrowserOpen = true;
+        open("http://localhost:9999");
+        RegistrationInfo info = DataGenerator.Registration.generationInfo(true,"ru");
+        CreateUser.CreateNewUser(info);
+        $("[data-test-id=login] input").setValue("");
+        $("[data-test-id=password] input").setValue(info.getPassword());
+        $("[data-test-id=action-login]").click();
+        $("[data-test-id=login] .input__sub").shouldHave(Condition.text("Поле обязательно для заполнения"));
+    }
+
+    @Test
+    void shouldTestNonPas() {
+        Configuration.holdBrowserOpen = true;
+        open("http://localhost:9999");
+        RegistrationInfo info = DataGenerator.Registration.generationInfo(true,"ru");
+        CreateUser.CreateNewUser(info);
+        $("[data-test-id=login] input").setValue(info.getLogin());
+        $("[data-test-id=password] input").setValue("");
+        $("[data-test-id=action-login]").click();
+        $("[data-test-id=password] .input__sub").shouldHave(Condition.text("Поле обязательно для заполнения"));
+    }
+    @Test
+    void shouldTestBadLogin() {
+        Configuration.holdBrowserOpen = true;
+        open("http://localhost:9999");
+        RegistrationInfo info = DataGenerator.Registration.generationInfo(true,"ru");
+        CreateUser.CreateNewUser(info);
+        $("[data-test-id=login] input").setValue("Иван");
+        $("[data-test-id=password] input").setValue(info.getPassword());
+        $("[data-test-id=action-login]").click();
+        $("[data-test-id=error-notification]").shouldHave(Condition.text("Неверно указан логин или пароль")).shouldHave(Condition.visible);
+    }
+
+    @Test
+    void shouldTestBadPas() {
+        Configuration.holdBrowserOpen = true;
+        open("http://localhost:9999");
+        RegistrationInfo info = DataGenerator.Registration.generationInfo(true,"ru");
+        CreateUser.CreateNewUser(info);
+        $("[data-test-id=login] input").setValue(info.getLogin());
+        $("[data-test-id=password] input").setValue("girlm876ylk");
+        $("[data-test-id=action-login]").click();
+        $("[data-test-id=error-notification]").shouldHave(Condition.text("Неверно указан логин или пароль")).shouldHave(Condition.visible);
     }
 }

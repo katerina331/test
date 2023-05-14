@@ -22,7 +22,7 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
       - name: Run artifact
-        run: java -jar ./artifacts/app-card-delivery.jar & chmod +x gradlew
+        run: java -jar ./artifacts/app-ibank.jar -P:profile=test & chmod +x gradlew
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Build with Gradle
