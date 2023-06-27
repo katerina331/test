@@ -1,7 +1,8 @@
 package ru.netology.web.data;
 
 import lombok.Value;
-import ru.netology.web.page.DashboardPage;
+
+import java.util.Random;
 
 
 public class DataHelper {
@@ -33,31 +34,31 @@ public class DataHelper {
   @Value
   public static class CardInfo {
     private String number;
-    private int balance;
+    private String idCard;
   }
 
   public static CardInfo getFirstCardInfo() {
-    String card = "5559000000000001";
-    int balance = 10000;
-    return new CardInfo(card,balance);
+    return new CardInfo("5559000000000001","92df3f1c-a033-48e6-8390-206f6b1f56c0");
   }
 
   public static CardInfo getSecondCardInfo() {
-    String card = "5559000000000002";
-    int balance = 10000;
-    return new CardInfo(card,balance);
+    return new CardInfo("5559000000000002","0f3f5c2a-249e-4c3d-8287-09f7a039391d");
+  }
+
+  public static int getSumTransferInfo(int balance) {
+    return new Random().nextInt(balance)+1;
+  }
+
+  public static int getInvalidSumTransferInfo(int balance) {
+    return new Random().nextInt(balance)+balance;
   }
 
   @Value
-  public static class CardTransferInfo {
-  private int sumTransfer;
-}
-
-  public static CardTransferInfo getFirstSumTransferInfo() {
-    return new CardTransferInfo(1000);
+  public static class ErrorInfo {
+    private String transferError;
   }
 
-  public static CardTransferInfo getSecondSumTransferInfo() {
-    return new CardTransferInfo(2000);
+  public static ErrorInfo getTransferErrorInfo() {
+    return new ErrorInfo("Произошла ошибка");
   }
 }
